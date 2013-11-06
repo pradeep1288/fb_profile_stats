@@ -15,7 +15,12 @@ def get_number_of_friends(graph):
 def get_friends_gender(graph):
     pass
 
-#print get_number_of_friends(graph)
+def get_number_of_wall_posts(graph):
+    FQL = 'SELECT wall_count FROM user WHERE uid = me()'
+    return graph.fql(FQL)['data'][0]['wall_count']
 
+#print get_number_of_friends(graph)
 #next_list = graph.get('me/friends?fields=gender')['paging']['next'].replace('https://graph.facebook.com/','')
-#print len(graph.get('me/friends',pagination=True)['data'])
+#friends = graph.get('me/friends',page=True)
+#for friend in friends:
+#    print len(friend['data'])
