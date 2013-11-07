@@ -48,9 +48,17 @@ class FBStat:
         FQL = 'SELECT wall_count FROM user WHERE uid = me()'
         return self.graph.fql(FQL)['data'][0]['wall_count']
 
+    def get_number_of_albums(self):
+        '''
+        This function will return the number of albums created by you
+        '''
+        FQL = 'SELECT aid from album where owner = me()'
+        albums = self.graph.fql(FQL)
+        return len(albums['data'])
+
 
 obj = FBStat(graph)
 print obj.get_number_of_friends()
 print obj.get_number_male_female_friends()
-
+print obj.get_number_of_albums()
 
