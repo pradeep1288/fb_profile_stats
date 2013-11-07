@@ -40,7 +40,6 @@ class FBStat:
 
         return no_of_friends_by_gender
 
-
     def get_number_of_wall_posts(self):
         '''
         This function will return the number of wall posts made by the current user
@@ -56,9 +55,23 @@ class FBStat:
         albums = self.graph.fql(FQL)
         return len(albums['data'])
 
+    def get_number_of_photos(self):
+        '''
+        Return the number of photos uploaded by the user
+        '''
+        # First fetch all the user albums, with aid's
+        FQL = 'SELECT aid from album where owner = me()'
+        albums = graph.fql(FQL)
+        no_of_photos = 0
+        for album_id in albums['data']:
+            TEMP_FQL = 'SELECT photo_count from album where aid =' + album_id['aid']
+            no_of_photos += graph.fql(TEMP_FQL)['data'][0]['photo_count']
+        return no_of_photos
+
+
 
 obj = FBStat(graph)
-print obj.get_number_of_friends()
-print obj.get_number_male_female_friends()
-print obj.get_number_of_albums()
-
+#print obj.get_number_of_friends()
+#print obj.get_number_male_female_friends()
+#print obj.get_number_of_albums()
+print obj.get_number_of_photos()
