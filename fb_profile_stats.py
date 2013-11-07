@@ -1,7 +1,7 @@
 from facepy import GraphAPI
 
 
-OAUTH_TOKEN = '<your oauth token>'
+OAUTH_TOKEN = '<oauth_token>'
 
 graph = GraphAPI(OAUTH_TOKEN)
 
@@ -65,8 +65,20 @@ class FBStat:
         no_of_photos = 0
         for album_id in albums['data']:
             TEMP_FQL = 'SELECT photo_count from album where aid =' + album_id['aid']
-            no_of_photos += graph.fql(TEMP_FQL)['data'][0]['photo_count']
+            no_of_photos += self.graph.fql(TEMP_FQL)['data'][0]['photo_count']
         return no_of_photos
+
+    def get_number_of_likes_on_albums(self):
+        '''
+        Returns the total number of likes on the albums
+        '''
+        # get the object_id's of all the albums, as its needed for the like's table
+        #ToDo: Verify correntness.
+        FQL = 'select object_id from album where owner = me()'
+        albums_object_ids = graph.fql(FQL)
+        for object_id in albums_object_ids['data']:
+            TEMP_FQL = 'SELECT user_id from like where object_id=' + str(object_id['object_id'])
+            print len(self.graph.fql(TEMP_FQL)['data'])
 
 
 
@@ -74,4 +86,5 @@ obj = FBStat(graph)
 #print obj.get_number_of_friends()
 #print obj.get_number_male_female_friends()
 #print obj.get_number_of_albums()
-print obj.get_number_of_photos()
+#print obj.get_number_of_photos()
+print obj.get_number_of_likes_on_albums()
